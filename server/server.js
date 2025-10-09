@@ -3,9 +3,14 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "./src/routes/authRoutes.js";
+import contactRoutes from "./src/routes/contactRoutes.js";
+
 
 dotenv.config();
 const app = express();
+
+
+app.use("/api/contacts", contactRoutes);
 app.use(cors());
 app.use(express.json());
 
