@@ -22,6 +22,11 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "JWT_SECRET not configured" });
+    }
+    
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
