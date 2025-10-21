@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import http from "http";
 import authRoutes from "./src/routes/authRoutes.js";
 import contactRoutes from "./src/routes/contactRoutes.js";
+import reminderRoutes from "./src/routes/reminderRoutes.js";
+
 
 
 dotenv.config();
@@ -22,6 +24,7 @@ mongoose
 app.get("/", (req, res) => res.send("API Running..."));
 app.use("/api/auth", authRoutes);
 app.use("/api/contacts", contactRoutes);
+app.use("/api/reminders", reminderRoutes);
 
 // Robust server startup with port fallback and graceful shutdown
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
