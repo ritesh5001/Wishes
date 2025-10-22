@@ -59,6 +59,34 @@ npm run dev
 npm start
 ```
 
+## Deploying to Render
+
+You can deploy the backend with the included `render.yaml` or by creating a Web Service manually.
+
+### Option A: Blueprint (render.yaml)
+1. Push this repo to GitHub.
+2. In Render, click New > Blueprint and select the repo.
+3. Render will create a Web Service for `backend/server` using:
+	- Build: `npm ci --omit=dev` (fallback `npm install`)
+	- Start: `npm start`
+	- Health check path: `/health`
+4. Set environment variables in the Render dashboard:
+	- `NODE_ENV=production`
+	- `MONGO_URI`
+	- `JWT_SECRET`
+	- `CLIENT_URL` (comma-separated list of allowed origins, e.g., `https://your-frontend.onrender.com`)
+	- `REMINDER_WINDOW_DAYS` (optional)
+	- `PORT` is provided by Render automatically
+
+### Option B: Manual Web Service
+1. New > Web Service > Connect the repo
+2. Root Directory: `backend/server`
+3. Environment: Node
+4. Build Command: `npm ci --omit=dev` (or `npm install`)
+5. Start Command: `npm start`
+6. Health Check Path: `/health`
+7. Add the same environment variables as above
+
 ## API Endpoints
 
 ### Authentication

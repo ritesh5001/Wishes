@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: wishes-backend
+    env: node
+    rootDir: backend/server
+    buildCommand: npm ci --omit=dev || npm install --production
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromServicePort: true
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: REMINDER_WINDOW_DAYS
+        value: "30"
