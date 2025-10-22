@@ -21,3 +21,16 @@ services:
         sync: false
       - key: REMINDER_WINDOW_DAYS
         value: "30"
+
+  - type: static_site
+    name: wishes-frontend
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://wishes-rhvh.onrender.com

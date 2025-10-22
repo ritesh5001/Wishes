@@ -2,17 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { format } from 'date-fns';
-import { HiOutlineArrowLeft, HiOutlineCheckCircle, HiOutlinePlus, HiOutlineXMark, HiOutlineTag } from 'react-icons/hi2';
+import { HiOutlineArrowLeft, HiOutlineCheckCircle, HiOutlinePlus, HiOutlineXMark } from 'react-icons/hi2';
 import api from '../utils/api';
 import Loader from '../components/Loader';
 import { useAuth } from '../context/AuthContext';
 
 const initialForm = {
-  firstName: '',
-  lastName: '',
+  name: '',
   address: '',
-  tags: [],
-  notes: '',
   events: [
     // example default row (optional): { type: 'birthday', date: '' }
   ],
@@ -33,7 +30,7 @@ const AddContact = () => {
   const { logout } = useAuth();
 
   const [form, setForm] = useState(initialForm);
-  const [tagInput, setTagInput] = useState('');
+  // tags removed
   const [loading, setLoading] = useState(Boolean(id));
   const [saving, setSaving] = useState(false);
 
@@ -73,11 +70,8 @@ const AddContact = () => {
         ].filter(Boolean);
 
         setForm({
-          firstName: legacyFirst,
-          lastName: legacyLast,
+          name: contact.name ?? `${legacyFirst} ${legacyLast}`.trim(),
           address: addressString,
-          tags: Array.isArray(contact.tags) ? contact.tags : [],
-          notes: contact.notes ?? '',
           events: eventsArray,
         });
       } catch (error) {
@@ -103,27 +97,7 @@ const AddContact = () => {
 
   // address is a single string now
 
-  const addTag = () => {
-    const v = tagInput.trim();
-    if (!v) return;
-    if (form.tags.includes(v)) {
-      setTagInput('');
-      return;
-    }
-    setForm((prev) => ({ ...prev, tags: [...prev.tags, v] }));
-    setTagInput('');
-  };
-
-  const removeTag = (tag) => {
-    setForm((prev) => ({ ...prev, tags: prev.tags.filter((t) => t !== tag) }));
-  };
-
-  const handleTagKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault();
-      addTag();
-    }
-  };
+  // tags removed
 
   const addEventRow = () => {
     setForm((prev) => ({ ...prev, events: [...prev.events, { type: 'birthday', label: '', date: '', recurring: true }] }));
@@ -142,7 +116,6 @@ const AddContact = () => {
   };
 
   const payload = useMemo(() => {
-    const tags = Array.isArray(form.tags) && form.tags.length > 0 ? form.tags : undefined;
     const events = Array.isArray(form.events)
       ? form.events
           .map((e) => ({
@@ -155,11 +128,8 @@ const AddContact = () => {
       : undefined;
 
     return {
-      firstName: form.firstName || undefined,
-      lastName: form.lastName || undefined,
+      name: form.name || undefined,
       address: form.address || undefined,
-      tags,
-      notes: form.notes || undefined,
       events,
     };
   }, [form]);
@@ -169,8 +139,8 @@ const AddContact = () => {
     setSaving(true);
 
     try {
-      if (!payload.firstName) {
-        toast.error('First name is required');
+      if (!payload.name) {
+        toast.error('Name is required');
         setSaving(false);
         return;
       }
@@ -224,37 +194,20 @@ const AddContact = () => {
         onSubmit={handleSubmit}
         className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
       >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="firstName" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-              First name
-            </label>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              value={form.firstName}
-              onChange={handleChange}
-              placeholder="First name"
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="lastName" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-              Last name
-            </label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              value={form.lastName}
-              onChange={handleChange}
-              placeholder="Last name"
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-          </div>
+        <div>
+          <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Full name"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+            required
+          />
         </div>
 
         <div>
@@ -272,31 +225,7 @@ const AddContact = () => {
           />
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Tags</label>
-          <div className="flex flex-wrap items-center gap-2">
-            {form.tags.map((tag) => (
-              <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">
-                <HiOutlineTag className="h-3 w-3" />
-                {tag}
-                <button type="button" onClick={() => removeTag(tag)} className="ml-1 rounded-full p-0.5 hover:bg-slate-200 dark:hover:bg-slate-700">
-                  <HiOutlineXMark className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
-            <input
-              type="text"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleTagKeyDown}
-              placeholder="Add tag and press Enter"
-              className="min-w-[200px] flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-            <button type="button" onClick={addTag} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:border-brand-500 hover:text-brand-500 dark:border-slate-700 dark:text-slate-300">
-              <HiOutlinePlus className="h-4 w-4" /> Add tag
-            </button>
-          </div>
-        </div>
+        {/* Tags removed */}
 
         <div>
           <div className="mb-2 flex items-center justify-between">
@@ -362,20 +291,7 @@ const AddContact = () => {
           </div>
         </div>
 
-        <div>
-          <label htmlFor="notes" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-            Notes
-          </label>
-          <textarea
-            id="notes"
-            name="notes"
-            value={form.notes}
-            onChange={handleChange}
-            placeholder="Personal preferences, family details, community contributions, etc."
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            rows={4}
-          />
-        </div>
+        {/* Notes removed */}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-slate-500 dark:text-slate-400">

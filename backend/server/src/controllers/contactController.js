@@ -2,18 +2,15 @@ import Contact from "../models/contact.js";
 
 export const addContact = async (req, res) => {
   try {
-    const { firstName, lastName, address, tags, notes, events } = req.body;
-    if (!firstName) {
-      return res.status(400).json({ message: "First name is required" });
+    const { name, address, events } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
     }
 
     const contact = new Contact({
       ownerId: req.user.id,
-      firstName,
-      lastName,
+      name,
       address,
-      tags,
-      notes,
       events,
     });
 

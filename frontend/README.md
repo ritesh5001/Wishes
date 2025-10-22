@@ -17,6 +17,26 @@ If not set, the app uses `http://localhost:3000` in development and `https://wis
 
 # React + Vite
 
+## Deploying to Render
+
+This repository includes a `render.yaml` with a static site service for the frontend.
+
+What it does:
+- Builds the app from `frontend/` with `npm ci && npm run build`
+- Publishes the static site from `frontend/dist`
+- Adds SPA rewrite (`/* -> /index.html`) so client-side routes work
+- Sets `VITE_API_URL` to your backend URL (edit if needed)
+
+Steps:
+1. Commit and push to GitHub.
+2. In Render, create a “Blueprint” from this repo; it will detect `render.yaml`.
+3. In the backend service, set `CLIENT_URL` to your frontend’s Render URL (required in production for CORS).
+4. Deploy. The frontend will build and point to your backend automatically.
+
+Environment variables:
+- Frontend: `VITE_API_URL` (non-secret). Defaults are already sensible; override if needed.
+- Backend: `CLIENT_URL` must include your frontend origin (e.g., `https://wishes-frontend.onrender.com`).
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

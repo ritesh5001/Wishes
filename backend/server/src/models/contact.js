@@ -16,13 +16,9 @@ const eventSchema = new mongoose.Schema({
 const contactSchema = new mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    firstName: { type: String, required: true },
-    lastName: String,
-    // phone and email removed as per new requirements
+    name: { type: String, required: true },
     // Keep a single address string field
     address: String,
-    tags: [String],
-    notes: String,
     events: [eventSchema],
   },
   { timestamps: true }
