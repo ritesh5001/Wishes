@@ -24,8 +24,7 @@ const ContactCard = ({ contact, onEdit, onDelete }) => (
       <div className="flex items-center gap-3">
         <HiOutlineUserCircle className="h-10 w-10 text-brand-500" />
         <div>
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{contact.name}</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{contact.phone || 'No phone number provided'}</p>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{contact.__displayName || contact.name}</h3>
         </div>
       </div>
 
@@ -50,29 +49,48 @@ const ContactCard = ({ contact, onEdit, onDelete }) => (
     </div>
 
     <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-      {contact.address && (
+      {contact.address && (typeof contact.address === 'string' ? (
         <p className="flex items-center gap-2">
           <HiOutlineHomeModern className="h-4 w-4 text-brand-500" />
           {contact.address}
         </p>
-      )}
-      {contact.birthday && (
-        <p className="flex items-center gap-2">
-          <HiOutlineCalendar className="h-4 w-4 text-rose-500" />
-          Birthday: <span className="font-medium">{formatDate(contact.birthday)}</span>
-        </p>
-      )}
-      {contact.marriageAnniversary && (
-        <p className="flex items-center gap-2">
-          <HiOutlineCalendar className="h-4 w-4 text-emerald-500" />
-          Marriage Anniversary: <span className="font-medium">{formatDate(contact.marriageAnniversary)}</span>
-        </p>
-      )}
-      {contact.deathAnniversary && (
-        <p className="flex items-center gap-2">
-          <HiOutlineCalendar className="h-4 w-4 text-slate-500" />
-          Death Anniversary: <span className="font-medium">{formatDate(contact.deathAnniversary)}</span>
-        </p>
+      ) : (
+        (contact.address.line1 || contact.address.city || contact.address.state || contact.address.pincode) && (
+          <p className="flex items-center gap-2">
+            <HiOutlineHomeModern className="h-4 w-4 text-brand-500" />
+            {[contact.address.line1, contact.address.city, contact.address.state, contact.address.pincode].filter(Boolean).join(', ')}
+          </p>
+        )
+      ))}
+      {Array.isArray(contact.events) && contact.events.length > 0 ? (
+        contact.events.slice(0, 3).map((e, idx) => (
+          <p key={idx} className="flex items-center gap-2">
+            <HiOutlineCalendar className="h-4 w-4 text-rose-500" />
+            {(e.type ?? 'Event')}{e.label ? ` - ${e.label}` : ''}:&nbsp;
+            <span className="font-medium">{formatDate(e.date)}</span>
+          </p>
+        ))
+      ) : (
+        <>
+          {contact.birthday && (
+            <p className="flex items-center gap-2">
+              <HiOutlineCalendar className="h-4 w-4 text-rose-500" />
+              Birthday: <span className="font-medium">{formatDate(contact.birthday)}</span>
+            </p>
+          )}
+          {contact.marriageAnniversary && (
+            <p className="flex items-center gap-2">
+              <HiOutlineCalendar className="h-4 w-4 text-emerald-500" />
+              Marriage Anniversary: <span className="font-medium">{formatDate(contact.marriageAnniversary)}</span>
+            </p>
+          )}
+          {contact.deathAnniversary && (
+            <p className="flex items-center gap-2">
+              <HiOutlineCalendar className="h-4 w-4 text-slate-500" />
+              Death Anniversary: <span className="font-medium">{formatDate(contact.deathAnniversary)}</span>
+            </p>
+          )}
+        </>
       )}
       {contact.notes && (
         <p className="rounded-lg bg-slate-100 px-3 py-2 text-xs leading-relaxed text-slate-600 dark:bg-slate-800 dark:text-slate-300">
@@ -86,9 +104,17 @@ const ContactCard = ({ contact, onEdit, onDelete }) => (
 ContactCard.propTypes = {
   contact: PropTypes.shape({
     _id: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    phone: PropTypes.string,
-    address: PropTypes.string,
+    name: PropTypes.string,
+    __displayName: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    address: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({ line1: PropTypes.string, city: PropTypes.string, state: PropTypes.string, pincode: PropTypes.string }),
+    ]),
+    events: PropTypes.arrayOf(
+      PropTypes.shape({ type: PropTypes.string, label: PropTypes.string, date: PropTypes.string, recurring: PropTypes.bool })
+    ),
     birthday: PropTypes.string,
     marriageAnniversary: PropTypes.string,
     deathAnniversary: PropTypes.string,

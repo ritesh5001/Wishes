@@ -1,3 +1,20 @@
+# Wishes Frontend
+
+This React + Vite app talks to a backend API. Configure the backend base URL via a Vite env var:
+
+- Create a `.env` file in `frontend/` (or use `.env.production` / `.env.development`).
+- Set `VITE_API_URL` to your backend root URL (without the trailing slash). The app will auto-append `/api`.
+
+Example:
+
+```
+VITE_API_URL=https://wishes-rhvh.onrender.com
+```
+
+If not set, the app uses `http://localhost:3000` in development and `https://wishes-rhvh.onrender.com` in production by default.
+
+---
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

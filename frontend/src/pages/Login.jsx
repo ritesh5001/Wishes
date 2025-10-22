@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { HiOutlineLockClosed, HiOutlineMail, HiOutlineUser } from 'react-icons/hi2';
+import { HiOutlineLockClosed, HiOutlineEnvelope } from 'react-icons/hi2';
 import { useAuth } from '../context/AuthContext';
 
-const Register = () => {
+const Login = () => {
   const navigate = useNavigate();
-  const { register, loading } = useAuth();
+  const location = useLocation();
+  const { login, loading } = useAuth();
 
   const [form, setForm] = useState({
-    name: '',
     email: '',
     password: '',
   });
@@ -23,9 +23,10 @@ const Register = () => {
     event.preventDefault();
 
     try {
-      await register(form);
-      toast.success('Account created successfully. Please sign in.');
-      navigate('/login');
+      await login(form);
+      toast.success('Welcome back!');
+      const redirectTo = location.state?.from?.pathname ?? '/dashboard';
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       toast.error(error.message);
     }
@@ -36,37 +37,17 @@ const Register = () => {
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white/80 p-8 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">Political Contact Manager</p>
-          <h1 className="mt-3 text-2xl font-bold text-slate-900 dark:text-slate-100">Create your account</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Stay organized with reminders and contact insights.</p>
+          <h1 className="mt-3 text-2xl font-bold text-slate-900 dark:text-slate-100">Login to your account</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Access your dashboard, contacts, and reminders.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-              Full name
-            </label>
-            <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500 dark:border-slate-700 dark:bg-slate-900">
-              <HiOutlineUser className="h-5 w-5 text-slate-400" />
-              <input
-                id="name"
-                name="name"
-                type="text"
-                value={form.name}
-                onChange={handleChange}
-                className="w-full border-none bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none dark:text-slate-100"
-                placeholder="Jane Doe"
-                minLength={2}
-                required
-              />
-            </div>
-          </div>
-
           <div>
             <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
               Email address
             </label>
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500 dark:border-slate-700 dark:bg-slate-900">
-              <HiOutlineMail className="h-5 w-5 text-slate-400" />
+              <HiOutlineEnvelope className="h-5 w-5 text-slate-400" />
               <input
                 id="email"
                 name="email"
@@ -93,7 +74,7 @@ const Register = () => {
                 value={form.password}
                 onChange={handleChange}
                 className="w-full border-none bg-transparent text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none dark:text-slate-100"
-                placeholder="Min. 6 characters"
+                placeholder="••••••••"
                 minLength={6}
                 required
               />
@@ -105,17 +86,17 @@ const Register = () => {
             disabled={loading}
             className="mt-2 w-full rounded-xl bg-brand-500 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition hover:bg-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-500/40 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? 'Creating account…' : 'Create account'}
+            {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-          Already registered?{' '}
+          Don&apos;t have an account?{' '}
           <Link
-            to="/login"
+            to="/register"
             className="font-semibold text-brand-600 transition hover:text-brand-500"
           >
-            Sign in
+            Create one now
           </Link>
         </p>
       </div>
@@ -123,4 +104,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

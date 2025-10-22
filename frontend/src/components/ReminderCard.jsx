@@ -9,8 +9,15 @@ const badgeStyles = {
 };
 
 const ReminderCard = ({ reminder }) => {
-  const type = reminder.type?.toLowerCase();
-  const badgeClass = badgeStyles[type] ?? 'bg-brand-100 text-brand-600';
+  const rawType = (reminder.type || '').toLowerCase();
+  const normalizedType = rawType.includes('birth')
+    ? 'birthday'
+    : rawType.includes('marriage') || rawType.includes('wedding')
+      ? 'marriage'
+      : rawType.includes('death')
+        ? 'death'
+        : '';
+  const badgeClass = badgeStyles[normalizedType] ?? 'bg-brand-100 text-brand-600';
   const rawDate = reminder.date ? new Date(reminder.date) : null;
   const date = rawDate && !Number.isNaN(rawDate.getTime()) ? rawDate : null;
 
@@ -29,9 +36,9 @@ const ReminderCard = ({ reminder }) => {
           </div>
         </div>
 
-        {type && (
+        {normalizedType && (
           <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${badgeClass}`}>
-            {type}
+            {normalizedType}
           </span>
         )}
       </div>

@@ -13,6 +13,7 @@ const Contacts = () => {
   const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [search, setSearch] = useState('');
+  const displayName = (c) => (c.name ? c.name : [c.firstName, c.lastName].filter(Boolean).join(' ').trim());
 
   const fetchContacts = useCallback(async () => {
     setLoading(true);
@@ -35,7 +36,7 @@ const Contacts = () => {
   }, [fetchContacts]);
 
   const handleDelete = async (contact) => {
-    const confirmation = window.confirm(`Delete ${contact.name}? This action cannot be undone.`);
+    const confirmation = window.confirm(`Delete ${displayName(contact)}? This action cannot be undone.`);
     if (!confirmation) return;
 
     try {
@@ -53,7 +54,7 @@ const Contacts = () => {
   const filteredContacts = useMemo(() => {
     const term = search.trim().toLowerCase();
     if (!term) return contacts;
-    return contacts.filter((contact) => contact.name?.toLowerCase().includes(term));
+    return contacts.filter((contact) => displayName(contact).toLowerCase().includes(term));
   }, [contacts, search]);
 
   if (loading) {
@@ -116,7 +117,7 @@ const Contacts = () => {
           {filteredContacts.map((contact) => (
             <ContactCard
               key={contact._id ?? contact.name}
-              contact={contact}
+              contact={{ ...contact, __displayName: displayName(contact) }}
               onEdit={() => navigate(`/add-contact/${contact._id}`)}
               onDelete={handleDelete}
             />

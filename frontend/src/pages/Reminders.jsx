@@ -10,12 +10,13 @@ const Reminders = () => {
   const { logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [reminders, setReminders] = useState([]);
+  const windowDays = 7;
 
   const fetchReminders = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await api.get('/reminders/upcoming');
-      const remindersData = data?.reminders ?? data ?? [];
+      const { data } = await api.get('/reminders/upcoming', { params: { days: windowDays } });
+      const remindersData = data?.upcoming ?? data ?? [];
       setReminders(Array.isArray(remindersData) ? remindersData : []);
     } catch (error) {
       toast.error(error.message);
@@ -34,10 +35,10 @@ const Reminders = () => {
   const groupedStats = useMemo(() => {
     return reminders.reduce(
       (accumulator, reminder) => {
-        const type = reminder.type?.toLowerCase();
-        if (type === 'birthday') accumulator.birthdays += 1;
-        else if (type === 'marriage') accumulator.marriages += 1;
-        else if (type === 'death') accumulator.remembrances += 1;
+        const t = (reminder.type || '').toLowerCase();
+        if (t.includes('birth')) accumulator.birthdays += 1;
+        else if (t.includes('marriage') || t.includes('wedding')) accumulator.marriages += 1;
+        else if (t.includes('death')) accumulator.remembrances += 1;
         else accumulator.others += 1;
         return accumulator;
       },
@@ -53,7 +54,7 @@ const Reminders = () => {
     <div className="space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Upcoming reminders</h2>
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Upcoming reminders (next {windowDays} days)</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Stay prepared for important birthdays, anniversaries, and remembrance events.
           </p>

@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// Resolve API base URL in this order:
+// 1) Vite env var VITE_API_URL
+// 2) localhost for dev
+// 3) Render backend URL for production
+const resolvedBase = (import.meta?.env?.VITE_API_URL?.replace(/\/$/, ''))
+  || (import.meta?.env?.MODE === 'development' ? 'http://localhost:3000' : 'https://wishes-rhvh.onrender.com');
+
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: `${resolvedBase}/api`,
 });
 
 api.interceptors.response.use(
