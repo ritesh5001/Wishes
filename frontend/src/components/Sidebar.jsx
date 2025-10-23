@@ -49,7 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => (
       }`}
     >
     <div className="flex items-center justify-between px-6 py-5 md:hidden">
-  <BrandLogo size={40} />
+  <BrandLogo size={48} />
         <button
           type="button"
           onClick={onClose}
@@ -61,7 +61,7 @@ const Sidebar = ({ isOpen, onClose }) => (
       </div>
 
     <div className="hidden px-6 py-6 md:block">
-  <BrandLogo size={40} />
+  <BrandLogo size={48} />
       </div>
 
       <nav className="flex-1 space-y-1 px-3 pb-6">

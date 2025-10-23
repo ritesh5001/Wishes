@@ -29,7 +29,7 @@ const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
           </button>
 
           <div className="flex items-center gap-3">
-            <BrandLogo size={36} />
+            <BrandLogo size={48} />
             <h1 className="text-base font-semibold text-slate-800 dark:text-slate-100">
               {user?.name ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Dashboard'}
             </h1>

@@ -27,7 +27,7 @@ const Home = () => {
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
         <Link to="/" className="flex items-center gap-2">
-          <BrandLogo size={48} />
+          <BrandLogo size={56} />
         </Link>
 
         <div className="flex items-center gap-3 text-sm font-medium">

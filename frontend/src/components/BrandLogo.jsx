@@ -38,7 +38,7 @@ BrandLogo.propTypes = {
 };
 
 BrandLogo.defaultProps = {
-  size: 36,
+  size: 40,
   showText: false,
   textClassName: 'text-base font-semibold text-slate-800 dark:text-slate-100',
 };
