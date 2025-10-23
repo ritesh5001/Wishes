@@ -24,8 +24,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <Link to="/" className="flex items-center gap-2">
           <BrandLogo size={56} />
         </Link>
@@ -46,7 +46,7 @@ const Home = () => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6">
+  <main className="mx-auto w-full max-w-5xl flex-1 px-6">
         <section className="flex min-h-[68vh] flex-col items-center justify-center text-center">
           <h1 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl dark:text-white">
             Keep important dates in one place

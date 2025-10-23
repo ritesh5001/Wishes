@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import {
   HiOutlineBellAlert,
   HiOutlineCog6Tooth,
@@ -10,6 +11,7 @@ import {
 } from 'react-icons/hi2';
 
 import BrandLogo from './BrandLogo';
+import { useAuth } from '../context/AuthContext';
 const navItems = [
   {
     label: 'Dashboard',
@@ -33,7 +35,17 @@ const navItems = [
   },
 ];
 
-const Sidebar = ({ isOpen, onClose }) => (
+const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    toast.success('You have been logged out');
+    navigate('/login');
+  };
+
+  return (
   <>
     <div
       className={`fixed inset-0 z-30 bg-slate-900/40 transition-opacity duration-200 md:hidden ${
@@ -92,10 +104,22 @@ const Sidebar = ({ isOpen, onClose }) => (
             Personalize notifications and preferences. Feature coming soon.
           </p>
         </div>
+
+        {/* Mobile-only logout button */}
+        <div className="mt-4 px-3 md:hidden">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-brand-600 ring-1 ring-inset ring-slate-200 transition hover:bg-brand-50 hover:text-brand-700 hover:ring-brand-200 dark:bg-slate-800 dark:text-brand-400 dark:ring-slate-700 dark:hover:bg-slate-700"
+          >
+            Logout
+          </button>
+        </div>
       </nav>
     </aside>
   </>
-);
+  );
+};
 
 Sidebar.propTypes = {
   isOpen: PropTypes.bool,
