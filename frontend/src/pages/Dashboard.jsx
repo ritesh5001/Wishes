@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { format } from 'date-fns';
-import { motion } from 'framer-motion';
 import {
   HiOutlineArrowTopRightOnSquare,
   HiOutlineCalendar,
@@ -57,25 +56,21 @@ const Dashboard = () => {
       {
         label: 'Total contacts',
         value: contacts.length,
-        icon: HiOutlineUsers,
         accent: 'bg-brand-500/10 text-brand-600',
       },
       {
         label: 'Upcoming birthdays',
         value: birthdayCount,
-        icon: HiOutlineCalendar,
         accent: 'bg-rose-500/10 text-rose-600',
       },
       {
         label: 'Wedding anniversaries',
         value: marriageCount,
-        icon: HiOutlineUserGroup,
         accent: 'bg-emerald-500/10 text-emerald-600',
       },
       {
         label: 'Remembrance events',
         value: deathCount,
-        icon: HiOutlineCalendar,
         accent: 'bg-slate-500/10 text-slate-600',
       },
     ];
@@ -124,38 +119,19 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <motion.div
-          className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: {
-                staggerChildren: 0.05,
-                duration: 0.4,
-              },
-            },
-          }}
-        >
-          {stats.map(({ label, value, icon: Icon, accent }) => (
-            <motion.div
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stats.map(({ label, value }) => (
+            <div
               key={label}
-              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
               className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                <span className={`flex h-8 w-8 items-center justify-center rounded-full ${accent}`}>
-                  <Icon className="h-4 w-4" />
-                </span>
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                 {label}
               </div>
               <p className="text-3xl font-semibold text-slate-900 dark:text-slate-100">{value}</p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">

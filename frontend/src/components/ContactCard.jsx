@@ -13,7 +13,7 @@ const formatDate = (value) => {
   if (!value) return null;
   try {
     return format(new Date(value), 'PPP');
-  } catch (error) {
+  } catch {
     return value;
   }
 };

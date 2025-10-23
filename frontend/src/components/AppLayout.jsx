@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import Footer from './Footer';
 
 const getInitialTheme = () => {
   if (typeof window === 'undefined') return 'light';
@@ -61,6 +62,7 @@ const AppLayout = () => {
           <main className="mx-auto w-full max-w-6xl flex-1 p-6">
             <Outlet />
           </main>
+          <Footer />
         </div>
       </div>
     </div>

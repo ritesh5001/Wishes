@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import {
-  HiOutlineBars3,
-  HiOutlineBellAlert,
-  HiOutlineMoon,
-  HiOutlineSun,
-  HiOutlineUserCircle,
-} from 'react-icons/hi2';
+import { HiOutlineBars3, HiOutlineBellAlert, HiOutlineMoon, HiOutlineSun, HiOutlineUserCircle } from 'react-icons/hi2';
+import BrandLogo from './BrandLogo';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
@@ -33,8 +28,8 @@ const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
             <HiOutlineBars3 className="h-6 w-6" />
           </button>
 
-          <div>
-            <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Political Contact Manager</p>
+          <div className="flex items-center gap-3">
+            <BrandLogo size={36} />
             <h1 className="text-base font-semibold text-slate-800 dark:text-slate-100">
               {user?.name ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Dashboard'}
             </h1>

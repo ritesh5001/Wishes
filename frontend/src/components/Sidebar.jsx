@@ -9,6 +9,7 @@ import {
   HiOutlineXMark,
 } from 'react-icons/hi2';
 
+import BrandLogo from './BrandLogo';
 const navItems = [
   {
     label: 'Dashboard',
@@ -47,12 +48,8 @@ const Sidebar = ({ isOpen, onClose }) => (
         isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}
     >
-      <div className="flex items-center justify-between px-6 py-5 md:hidden">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">PCM</p>
-          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Political Contact Manager</p>
-        </div>
-
+    <div className="flex items-center justify-between px-6 py-5 md:hidden">
+  <BrandLogo size={40} />
         <button
           type="button"
           onClick={onClose}
@@ -63,16 +60,15 @@ const Sidebar = ({ isOpen, onClose }) => (
         </button>
       </div>
 
-      <div className="hidden px-6 py-6 md:block">
-        <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">PCM</p>
-        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Political Contact Manager</p>
+    <div className="hidden px-6 py-6 md:block">
+  <BrandLogo size={40} />
       </div>
 
       <nav className="flex-1 space-y-1 px-3 pb-6">
-        {navItems.map(({ to, label, icon: Icon }) => (
+        {navItems.map((item) => (
           <NavLink
-            key={to}
-            to={to}
+            key={item.to}
+            to={item.to}
             onClick={onClose}
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-900 ${
@@ -82,8 +78,8 @@ const Sidebar = ({ isOpen, onClose }) => (
               }`
             }
           >
-            <Icon className="h-5 w-5" />
-            {label}
+            <item.icon className="h-5 w-5" />
+            {item.label}
           </NavLink>
         ))}
 

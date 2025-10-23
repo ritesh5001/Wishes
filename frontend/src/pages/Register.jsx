@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { HiOutlineLockClosed, HiOutlineEnvelope, HiOutlineUser } from 'react-icons/hi2';
 import { useAuth } from '../context/AuthContext';
+import Footer from '../components/Footer';
+import BrandLogo from '../components/BrandLogo';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -32,10 +34,11 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-white to-emerald-50 px-4 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white/80 p-8 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-brand-50 via-white to-brand-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900">
+      <div className="flex flex-1 items-center justify-center px-4">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white/80 p-8 shadow-2xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
         <div className="mb-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">Political Contact Manager</p>
+          <div className="flex justify-center"><BrandLogo size={40} /></div>
           <h1 className="mt-3 text-2xl font-bold text-slate-900 dark:text-slate-100">Create your account</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">Stay organized with reminders and contact insights.</p>
         </div>
@@ -118,7 +121,9 @@ const Register = () => {
             Sign in
           </Link>
         </p>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

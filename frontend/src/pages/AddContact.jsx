@@ -19,7 +19,7 @@ const formatForInput = (value) => {
   if (!value) return '';
   try {
     return format(new Date(value), 'yyyy-MM-dd');
-  } catch (error) {
+  } catch {
     return value;
   }
 };

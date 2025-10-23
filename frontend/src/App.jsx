@@ -41,7 +41,7 @@ const App = () => (
         className: 'text-sm font-medium',
         success: {
           iconTheme: {
-            primary: '#1f5fff',
+            primary: '#FF9933',
             secondary: '#ffffff',
           },
         },
