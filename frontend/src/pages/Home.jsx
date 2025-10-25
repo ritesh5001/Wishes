@@ -8,14 +8,12 @@ const Home = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  // If the user is already logged in, take them straight to the app
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
-  // Respect saved theme preference (light/dark)
   useEffect(() => {
     const root = document.documentElement;
     const storedTheme = localStorage.getItem('pcm_theme');

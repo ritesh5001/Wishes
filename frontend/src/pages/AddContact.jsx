@@ -11,7 +11,6 @@ const initialForm = {
   name: '',
   address: '',
   events: [
-    // example default row (optional): { type: 'birthday', date: '' }
   ],
 };
 
@@ -30,7 +29,6 @@ const AddContact = () => {
   const { logout } = useAuth();
 
   const [form, setForm] = useState(initialForm);
-  // tags removed
   const [loading, setLoading] = useState(Boolean(id));
   const [saving, setSaving] = useState(false);
 
@@ -48,7 +46,6 @@ const AddContact = () => {
           return;
         }
 
-        // Support both new and legacy schema
         const legacyName = contact.name ?? '';
         const split = legacyName.trim().split(' ');
         const legacyFirst = contact.firstName ?? split[0] ?? '';
@@ -95,9 +92,7 @@ const AddContact = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // address is a single string now
-
-  // tags removed
+  
 
   const addEventRow = () => {
     setForm((prev) => ({ ...prev, events: [...prev.events, { type: 'birthday', label: '', date: '', recurring: true }] }));

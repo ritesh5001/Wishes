@@ -92,7 +92,7 @@ const ContactCard = ({ contact, onEdit, onDelete }) => (
           )}
         </>
       )}
-      {/* notes removed from display */}
+      
     </div>
   </article>
 );

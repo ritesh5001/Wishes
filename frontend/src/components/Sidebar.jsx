@@ -105,7 +105,6 @@ const Sidebar = ({ isOpen, onClose }) => {
           </p>
         </div>
 
-        {/* Mobile-only logout button */}
         <div className="mt-4 px-3 md:hidden">
           <button
             type="button"

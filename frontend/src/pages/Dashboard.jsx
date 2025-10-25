@@ -141,7 +141,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Quick upcoming summary */}
         <div className="mb-4 grid grid-cols-3 gap-3 sm:gap-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900">
             <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Today</div>

@@ -7,7 +7,6 @@ const BrandLogo = ({ size, showText, textClassName }) => {
   return (
     <div className="flex items-center gap-2">
       {imgOk ? (
-        // Expecting user-provided logo at public/logo.png
         <img
           src="/logo.png"
           alt="Smaran"

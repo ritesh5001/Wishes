@@ -18,7 +18,6 @@ const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        {/* Centered large logo on mobile */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center md:hidden">
           <BrandLogo size={56} />
         </div>
@@ -33,9 +32,7 @@ const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
           </button>
 
           <div className="flex items-center gap-2 md:gap-3">
-            {/* Hide the left-side logo on mobile (centered logo is shown) */}
             <span className="hidden md:inline-flex"><BrandLogo size={48} /></span>
-            {/* Hide greeting on small screens to avoid wrapping */}
             <h1 className="hidden md:block text-base font-semibold text-slate-800 dark:text-slate-100">
               {user?.name ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Dashboard'}
             </h1>
@@ -65,7 +62,6 @@ const Navbar = ({ onMenuClick, onToggleTheme, theme }) => {
             <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-danger" />
           </button>
 
-          {/* Hide the detailed user panel on mobile to save space */}
           <div className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900">
             <HiOutlineUserCircle className="h-8 w-8 text-brand-500" />
             <div>

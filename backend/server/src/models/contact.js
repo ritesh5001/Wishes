@@ -17,7 +17,6 @@ const contactSchema = new mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
-    // Keep a single address string field
     address: String,
     events: [eventSchema],
   },
