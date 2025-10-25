@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { format } from 'date-fns';
+import { format, differenceInCalendarDays, startOfDay } from 'date-fns';
 import {
   HiOutlineArrowTopRightOnSquare,
   HiOutlineCalendar,
@@ -76,7 +76,29 @@ const Dashboard = () => {
     ];
   }, [contacts.length, reminders]);
 
-  const latestReminders = useMemo(() => reminders.slice(0, 4), [reminders]);
+  const daysUntil = (value) => {
+    if (!value) return Number.POSITIVE_INFINITY;
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return Number.POSITIVE_INFINITY;
+    return differenceInCalendarDays(startOfDay(date), startOfDay(new Date()));
+  };
+
+  const sortedReminders = useMemo(
+    () => [...reminders].sort((a, b) => daysUntil(a.date) - daysUntil(b.date)),
+    [reminders],
+  );
+
+  const latestReminders = useMemo(() => sortedReminders.slice(0, 4), [sortedReminders]);
+  
+  const todayCount = useMemo(() => reminders.filter((r) => daysUntil(r.date) === 0).length, [reminders]);
+  const inTwoDaysCount = useMemo(() => reminders.filter((r) => daysUntil(r.date) === 2).length, [reminders]);
+  const nextSevenCount = useMemo(
+    () => reminders.filter((r) => {
+      const diff = daysUntil(r.date);
+      return diff >= 1 && diff <= 7 && diff !== 2;
+    }).length,
+    [reminders],
+  );
   const recentContacts = useMemo(() => contacts.slice(0, 4), [contacts]);
 
   const formatContactDate = (value) => {
@@ -116,6 +138,22 @@ const Dashboard = () => {
               New contact
               <HiOutlineChevronRight className="h-4 w-4" />
             </Link>
+          </div>
+        </div>
+
+        {/* Quick upcoming summary */}
+        <div className="mb-4 grid grid-cols-3 gap-3 sm:gap-4">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900">
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Today</div>
+            <div className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{todayCount}</div>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900">
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">In 2 days</div>
+            <div className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{inTwoDaysCount}</div>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 text-center dark:border-slate-800 dark:bg-slate-900">
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Next 7 days</div>
+            <div className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">{nextSevenCount}</div>
           </div>
         </div>
 
