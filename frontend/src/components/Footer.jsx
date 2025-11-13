@@ -9,7 +9,7 @@ const Footer = () => (
         rel="noreferrer"
         className="font-medium text-brand-600 hover:text-brand-500"
       >
-        Developed by Ritesh Giri
+        Developed by Abhisek Sahani
       </a>
     </div>
   </footer>
